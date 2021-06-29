@@ -1,0 +1,25 @@
+#home-logo {
+    padding-top: 12px;
+    width: 25px;
+    height: 25px;
+}
+
+.navbar-right {
+    display: flex;
+    justify-content: flex-start;
+    color: white;
+    background-color: #282a35;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    padding: 5px 12px 5px 12px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+li:hover {
+    background-color: black;
+}
