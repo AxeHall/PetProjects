@@ -1,4 +1,4 @@
-""" TOKEN = "1779909135:AAFbQegiPKYCylIfuHXd8V-nxBrh_lC1m_I" """
+
 
 import os
 import json
@@ -17,10 +17,10 @@ class Menu(object):
         self.PATH = path
     
     def breakfast(self, page):
-        """ list_of_tables = postgres.get_list_of_tables()
+        list_of_tables = postgres.get_list_of_tables()
 
-        if "redfin_data" not in list_of_tables:
-            postgres.create_table() """
+        if "breakfast" not in list_of_tables:
+            postgres.create_table_breakfast()
 
         with open(f"{self.PATH}/mypizza.kg/Menu/Category/{page}.html", "r") as f:
             menu = f.read()
@@ -35,24 +35,23 @@ class Menu(object):
         breakfast_pictures = []
         breakfast_prices = []
         breakfast_pictures_directory = self.PATH + "/images/breakfasts"
-        breakfast_dict = {}
         for item in breakfast_information:
-            breakfast_dict["name"] = (item.get("Name"))
-            breakfast_dict["price"] = (int(item.get("Price")))
+            breakfast_names.append(item.get("Name"))
+            breakfast_prices.append(int(item.get("Price")))
             pictures_values = item.get("PicturePath")
             pictures_link = "\'" + pictures_values + "\'"
             image_name = pictures_values.replace(" ", "_").split("/")
-            breakfast_dict["image"] = (breakfast_pictures_directory + "/" + image_name[-1])
+            breakfast_pictures.append(breakfast_pictures_directory + "/" + image_name[-1])
             os.system(f"wget -c -P {breakfast_pictures_directory} {pictures_link}")
-        
-        values = tuple(
-            breakfast_dict.get(key) for key in postgres.order
-        )
-        postgres.breakfast_insert_data(values)
-        """ yield {"breakfast_name": breakfast_names, "breakfast_price": breakfast_prices, "breakfast_image": breakfast_pictures} """
+
+        yield {"breakfast_name": tuple(breakfast_names), "breakfast_price": tuple(breakfast_prices), "breakfast_image": tuple(breakfast_pictures)}
 
 
-"""     def pizza_40_cm(self, page):
+    def pizza_40(self, page):
+        list_of_tables = postgres.get_list_of_tables()
+
+        if "pizza_40_cm" not in list_of_tables:
+            postgres.create_table_pizza_40_cm()
         with open(f"{self.PATH}/mypizza.kg/Menu/Category/{page}.html", "r") as f:
             menu = f.read()
         x1 = menu.find("categoryController.init")
@@ -78,10 +77,16 @@ class Menu(object):
             pizza_pictures.append(pizza_pictures_directory + "/" + pizza_image_name[-1])
             os.system(f"wget -c -P {pizza_pictures_directory} {pizza_pictures_link}")
 
-        yield {"pizza_name": pizza_names, "pizza_price": pizza_prices, "pizza_image": pizza_pictures}
+        yield {"pizza_name": tuple(pizza_names), "pizza_price": tuple(pizza_prices), "pizza_image": tuple(pizza_pictures)}
 
     
     def rolly(self, page):
+
+        list_of_tables = postgres.get_list_of_tables()
+
+        if "rolly" not in list_of_tables:
+            postgres.create_table_rolly()
+
         with open(f"{self.PATH}/mypizza.kg/Menu/Category/{page}.html", "r") as f:
             menu = f.read()
         x1 = menu.find("categoryController.init")
@@ -106,6 +111,12 @@ class Menu(object):
         yield {"rolly_name": rolly_names, "rolly_price": rolly_prices, "rolly_image": rolly_pictures}
 
     def salaty(self, page):
+        
+        list_of_tables = postgres.get_list_of_tables()
+
+        if "salaty" not in list_of_tables:
+            postgres.create_table_salaty()
+
         with open(f"{self.PATH}/mypizza.kg/Menu/Category/{page}.html", "r") as f:
             menu = f.read()
         x1 = menu.find("categoryController.init")
@@ -131,6 +142,12 @@ class Menu(object):
 
 
     def zakuski(self, page):
+
+        list_of_tables = postgres.get_list_of_tables()
+
+        if "zakuski" not in list_of_tables:
+            postgres.create_table_zakuski()
+
         with open(f"{self.PATH}/mypizza.kg/Menu/Category/{page}.html", "r") as f:
             menu = f.read()
         x1 = menu.find("categoryController.init")
@@ -158,6 +175,11 @@ class Menu(object):
 class Shares(object):
 
     def shares(self, page):
+        list_of_tables = postgres.get_list_of_tables()
+
+        if "shares" not in list_of_tables:
+            postgres.create_table_shares()
+
         PATH = str(Path(__file__).parent)
         with open(f"{PATH}/mypizza.kg/Shares/ShareItem/{page}.html", "r") as f:
             html = f.read()
@@ -181,6 +203,11 @@ class Shares(object):
 class About_company(object):
 
     def about(self, page):
+        list_of_tables = postgres.get_list_of_tables()
+
+        if "about" not in list_of_tables:
+            postgres.create_table_about()
+
         PATH = str(Path(__file__).parent)
         with open(f"{page}", "r") as f:
             html = f.read()
@@ -194,6 +221,11 @@ class About_company(object):
 class Vacancies(object):
 
     def jobs(self, page):
+        list_of_tables = postgres.get_list_of_tables()
+
+        if "jobs" not in list_of_tables:
+            postgres.create_table_jobs()
+
         PATH = str(Path(__file__).parent)
         with open(f"{PATH}/mypizza.kg/Vacancies/VacancyItem/{page}.html", "r") as f:
             html = f.read()
@@ -208,33 +240,8 @@ class Vacancies(object):
             for texts in text_line:
                 description.append(texts.text.replace("\r", "").replace("\n", "").replace("  ", ""))
             
-        yield {"vacancies": jobs_names, "theme": description}
-        
+        yield {"jobs_name": jobs_names, "theme": description}
 
-
-mypizza_menu = Menu(PATH)
-mypizza_menu.breakfast(4354)
-mypizza_menu.pizza_40_cm(4372)
-mypizza_menu.rolly(4365)
-mypizza_menu.salaty(4358)
-mypizza_menu.zakuski(4356) """
-
-
-
-
-""" shares_pages = [1014, 1017, 1018, 1019, 5146, 6161, 6163, 6164, 6168, 6172]
-mypizza_shares = Shares()
-for share_page in shares_pages:
-    print(next(mypizza_shares.shares(share_page)))
-
-mypizza_about = About_company()
-print(next(mypizza_about.about(f'{PATH}/mypizza.kg/Company/About.html')))
-
-
-jobs_pages = [10, 11]
-mypizza_jobs = Vacancies()
-for page in jobs_pages:
-    print(next(mypizza_jobs.jobs(page))) """
 
 
 if __name__ == "__main__":
@@ -243,7 +250,127 @@ if __name__ == "__main__":
     dbpswd = input(f"{dbuser}'s password: ")
 
     postgres = Postgres(db_name=dbname, user=dbuser, pswd=dbpswd)
-    mypizza_menu = Menu(PATH)
-    mypizza_menu.breakfast(4354)
+
+    """ mypizza_menu = Menu(PATH)
+    breakfast_name = []
+    breakfast_price = []
+    breakfast_image = []
+
+    for breakfast_item in mypizza_menu.breakfast(4354):
+        for name in breakfast_item.get("breakfast_name"):
+            breakfast_name.append(name)
+        for price in breakfast_item.get("breakfast_price"):
+            breakfast_price.append(price)
+        for image in breakfast_item.get("breakfast_image"):
+            breakfast_image.append(image)
+    
+
+    for i in range(len(breakfast_name)):
+        values = f'(\'{breakfast_name[i]}\', \'{breakfast_image[i]}\', {breakfast_price[i]})'
+        postgres.breakfast_insert_data(values)
+
+    pizza_40_name = []
+    pizza_40_price = []
+    pizza_40_image = []
+
+    for pizza_item in mypizza_menu.pizza_40(4372):
+        for name in pizza_item.get("pizza_name"):
+            pizza_40_name.append(name)
+        for price in pizza_item.get("pizza_price"):
+            pizza_40_price.append(price)
+        for image in pizza_item.get("pizza_image"):
+            pizza_40_image.append(image)
+
+    for i in range(len(pizza_40_name)):
+        values = f'(\'{pizza_40_name[i]}\', \'{pizza_40_image[i]}\', {pizza_40_price[i]})'
+        postgres.pizza_40_cm_insert_data(values)
+
+    rolly_name = []
+    rolly_price = []
+    rolly_image = []
+
+    for rolly_item in mypizza_menu.rolly(4365):
+        for name in rolly_item.get("rolly_name"):
+            rolly_name.append(name)
+        for price in rolly_item.get("rolly_price"):
+            rolly_price.append(price)
+        for image in rolly_item.get("rolly_image"):
+            rolly_image.append(image)
+
+    for i in range(len(rolly_name)):
+        values = f'(\'{rolly_name[i]}\', \'{rolly_image[i]}\', {rolly_price[i]})'
+        postgres.rolly_insert_data(values)
+
+    salaty_name = []
+    salaty_price = []
+    salaty_image = []
+
+    for salaty_item in mypizza_menu.salaty(4358):
+        for name in salaty_item.get("salaty_name"):
+            salaty_name.append(name)
+        for price in salaty_item.get("salaty_price"):
+            salaty_price.append(price)
+        for image in salaty_item.get("salaty_image"):
+            salaty_image.append(image)
+
+    for i in range(len(salaty_name)):
+        values = f'(\'{salaty_name[i]}\', \'{salaty_image[i]}\', {salaty_price[i]})'
+        postgres.salaty_insert_data(values)
+
+    zakuski_name = []
+    zakuski_price = []
+    zakuski_image = []
+
+    for zakuski_item in mypizza_menu.zakuski(4356):
+        for name in zakuski_item.get("zakuski_name"):
+            zakuski_name.append(name)
+        for price in zakuski_item.get("zakuski_price"):
+            zakuski_price.append(price)
+        for image in zakuski_item.get("zakuski_image"):
+            zakuski_image.append(image)
+
+    for i in range(len(zakuski_name)):
+        values = f'(\'{zakuski_name[i]}\', \'{zakuski_image[i]}\', {zakuski_price[i]})'
+        postgres.zakuski_insert_data(values)
+
+    shares_pages = [1014, 1017, 1018, 1019, 5146, 6161, 6163, 6164, 6168, 6172]
+    mypizza_shares = Shares()
+    shares_title = []
+    shares_image = []
+    shares_decription = []
+    for share_page in shares_pages:
+        for shares_item in mypizza_shares.shares(share_page):
+            for title in shares_item.get("share_title"):
+                shares_title.append(title)
+            for image in shares_item.get("share_pictures"):
+                shares_image.append(image)
+            for description in shares_item.get("share_description"):
+                shares_decription.append(description)
+
+    for i in range(len(shares_title)):
+        values = f'(\'{shares_title[i]}\', \'{shares_image[i]}\', \'{shares_decription[i]}\')'
+        postgres.shares_insert_data(values)
+
+    mypizza_about = About_company()
+    for about_info in mypizza_about.about(f'{PATH}/mypizza.kg/Company/About.html'):
+        values = f'(\'{about_info}\')'
+        postgres.about_insert_data(values)
+    
+    
+    jobs_pages = [10, 11]
+    mypizza_jobs = Vacancies()
+    jobs_name = []
+    jobs_theme = []
+    for page in jobs_pages:
+        for jobs_item in mypizza_jobs.jobs(page):
+            for vacancie in jobs_item.get("jobs_name"):
+                jobs_name.append(vacancie)
+            for theme in jobs_item.get("theme"):
+                jobs_theme.append(theme)
+    for i in range(len(jobs_name)):
+        values = f'(\'{jobs_name[i]}\', \'{jobs_theme[i]}\')'
+        postgres.jobs_insert_data(values) """
+
+
     postgres.end()
 
